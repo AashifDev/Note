@@ -39,7 +39,11 @@ class Home : Fragment() {
 
         noteViewModel.allNote.observe(viewLifecycleOwner, Observer {
             binding.recyclerView.adapter = NoteAdapter(it, this, this)
+            noteViewModel.checkEmptyDatabase(it)
+        })
 
+        noteViewModel.emptyDatabase.observe(viewLifecycleOwner, Observer {
+            showNoData(it)
         })
 
         binding.extendedFab.setOnClickListener {
@@ -56,6 +60,14 @@ class Home : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun showNoData(emptyDataBase:Boolean) {
+        if (emptyDataBase){
+            binding.noData.visibility = View.VISIBLE
+        }else{
+            binding.noData.visibility = View.INVISIBLE
+        }
     }
 
     fun onItemClicked(noteEntity: NoteEntity) {

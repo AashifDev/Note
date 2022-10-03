@@ -3,6 +3,7 @@ package com.example.note
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.note.database.NoteDatabase
 import com.example.note.repository.NoteRepository
@@ -21,6 +22,13 @@ class NoteViewModel(application: Application): AndroidViewModel(application) {
         allNote = noteRepository.getAllNote()
         allFavNote = noteRepository.getFavNote()
     }
+
+    val emptyDatabase:MutableLiveData<Boolean> = MutableLiveData(true)
+    fun checkEmptyDatabase(noteDatabase: List<NoteEntity>){
+        emptyDatabase.value = noteDatabase.isEmpty()
+    }
+
+
 
     fun addNote(noteEntity: NoteEntity){
         viewModelScope.launch(Dispatchers.IO) {
